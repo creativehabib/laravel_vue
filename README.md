@@ -59,7 +59,7 @@ In order to ensure that the Laravel community is welcoming to all, please review
 It's just like any other Laravel project. Basically here is how you use it for yourself. (it's not completed yet)
 - **Clone the repo <code>git clone https://github.com/creativehabib/laravel_vue.git</code>**
 - **<code>cd</code> to project folder.**
-- **Run <code>composer install</code>**
+- **Run <code>composer install</code> or <code>composer update</code>**
 - **Save as the <code>.env.example</code> to <code>.env </code>and set your database information**
 - **Run <code>php artisan key:generate</code> to generate the app key**
 - **Run <code>npm install</code>**
