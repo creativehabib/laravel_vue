@@ -18,7 +18,7 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody v-if="categories.length">
                             <tr v-for="category in categories" :key="category.id">
                                 <td>{{ category.id }}</td>
                                 <td>{{ category.name }}</td>
@@ -28,6 +28,13 @@
                                     <a @click.prevent = "deleteCategory(category)" href="#" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
+                            </tbody>
+                            <tbody v-else>
+                                <tr>
+                                    <td colspan="4">
+                                        <h5 class="text-center">No category found.</h5>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

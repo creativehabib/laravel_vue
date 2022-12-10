@@ -15,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::latest()->get();
+        return response()->json($products, 200);
     }
 
     /**
@@ -81,7 +82,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        if($product){
+            return response()->json($product, 200);
+        }else{
+            return response()->json('failed', 404);
+        }
     }
 
     /**
@@ -93,7 +98,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $this->validate($request, [
+            'title' => "required, $product->id"
+        ]);
+        $product->update([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+        ]);
+        return response()->json('success', 200);
     }
 
     /**
@@ -104,6 +116,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if($product){
+            $product->delete();
+            return response()->json('success', 200);
+        }else{
+            return response()->json('failed', 404);
+        }
     }
 }
