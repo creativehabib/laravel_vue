@@ -55,6 +55,17 @@ Thank you for considering contributing to the Laravel framework! The contributio
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
+## Installation
+It's just like any other Laravel project. Basically here is how you use it for yourself. (it's not completed yet)
+- **Clone the repo <code>git clone https://github.com/creativehabib/laravel_vue.git</code>**
+- **<code>cd</code> to project folder.**
+- **Run <code>composer install</code>**
+- **Save as the <code>.env.example</code> to <code>.env </code>and set your database information**
+- **Run <code>php artisan key:generate</code> to generate the app key**
+- **Run <code>npm install</code>**
+- **Run <code>php artisan migrate</code>**
+- **Done !!! Enjoy Customizing and building awesome app**
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
