@@ -5726,6 +5726,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.es.js");
+/* harmony import */ var object_to_formdata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! object-to-formdata */ "./node_modules/object-to-formdata/dist/index.module.js");
 //
 //
 //
@@ -5766,31 +5767,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      productForm: new vform__WEBPACK_IMPORTED_MODULE_0__["default"]({
-        title: ''
-      })
+      productForm: new vform__WEBPACK_IMPORTED_MODULE_0__.Form({
+        title: '',
+        price: '',
+        image: '',
+        description: '',
+        _method: 'put'
+      }),
+      image: ''
     };
   },
   methods: {
     updateProduct: function updateProduct() {
+      var _this = this;
       var id = this.$route.params.id;
-      this.productForm.put("/api/product/".concat(id)).then(function () {
-        alert('Product updated successfully!');
+      this.productForm.post("/api/product/".concat(id), {
+        transformRequest: [function (data, headers) {
+          return (0,object_to_formdata__WEBPACK_IMPORTED_MODULE_1__.objectToFormData)(data);
+        }],
+        onUploadProgress: function onUploadProgress(e) {
+          console.log(e);
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.image = data.image;
+        alert('Data updated');
       });
     },
     loadProduct: function loadProduct() {
-      var _this = this;
+      var _this2 = this;
       var id = this.$route.params.id;
       axios.get("/api/product/".concat(id, "/edit")).then(function (response) {
-        _this.productForm.title = response.data.title;
-        _this.productForm.price = response.data.price;
-        _this.productForm.description = response.data.description;
+        var product = response.data;
+        _this2.productForm.title = product.title;
+        _this2.productForm.price = product.price;
+        _this2.productForm.description = product.description;
+        _this2.image = product.image;
       });
+    },
+    onImageChange: function onImageChange(e) {
+      var file = e.target.files[0];
+      this.productForm.image = file;
     }
   },
   mounted: function mounted() {
@@ -30468,7 +30506,7 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group mb-2" }, [
-                      _c("label", { attrs: { for: "description" } }, [
+                      _c("label", { attrs: { for: "" } }, [
                         _vm._v("Product Description:"),
                       ]),
                       _vm._v(" "),
@@ -30487,7 +30525,7 @@ var render = function () {
                             _vm.productForm.errors.has("description"),
                         },
                         attrs: {
-                          id: "description",
+                          name: "description",
                           placeholder: "Product Description",
                           rows: "3",
                         },
@@ -30628,7 +30666,7 @@ var render = function () {
                           type: "text",
                           id: "title",
                           name: "title",
-                          placeholder: "Product title",
+                          placeholder: "Product Title",
                         },
                         domProps: { value: _vm.productForm.title },
                         on: {
@@ -30678,7 +30716,7 @@ var render = function () {
                           type: "number",
                           id: "price",
                           name: "price",
-                          placeholder: "Product price",
+                          placeholder: "Product Price",
                         },
                         domProps: { value: _vm.productForm.price },
                         on: {
@@ -30706,9 +30744,57 @@ var render = function () {
                         : _vm._e(),
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group mb-2" }, [
-                      _c("label", { attrs: { for: "description" } }, [
-                        _vm._v("Product Description:"),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-8" }, [
+                        _c("div", { staticClass: "form-group mb-2" }, [
+                          _c("label", { attrs: { for: "image" } }, [
+                            _vm._v("Product Image:"),
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            staticClass: "form-control-file",
+                            class: {
+                              "is-invalid": _vm.productForm.errors.has("image"),
+                            },
+                            attrs: { type: "file", id: "image", name: "image" },
+                            on: { change: _vm.onImageChange },
+                          }),
+                          _vm._v(" "),
+                          _vm.productForm.errors.has("image")
+                            ? _c("div", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.productForm.errors.get("image")
+                                  ),
+                                },
+                              })
+                            : _vm._e(),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-4" }, [
+                        _c(
+                          "div",
+                          {
+                            staticStyle: {
+                              width: "50%",
+                              "max-height": "100px",
+                              overflow: "hidden",
+                            },
+                          },
+                          [
+                            _c("img", {
+                              staticClass: "img-fluid",
+                              attrs: { src: _vm.image, alt: "" },
+                            }),
+                          ]
+                        ),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "des" } }, [
+                        _vm._v("Product Description"),
                       ]),
                       _vm._v(" "),
                       _c("textarea", {
@@ -30726,8 +30812,9 @@ var render = function () {
                             _vm.productForm.errors.has("description"),
                         },
                         attrs: {
-                          id: "description",
-                          placeholder: "Product Description",
+                          id: "des",
+                          name: "description",
+                          placeholder: "Product description",
                           rows: "3",
                         },
                         domProps: { value: _vm.productForm.description },
@@ -30744,6 +30831,16 @@ var render = function () {
                           },
                         },
                       }),
+                      _vm._v(" "),
+                      _vm.productForm.errors.has("description")
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(
+                                _vm.productForm.errors.get("description")
+                              ),
+                            },
+                          })
+                        : _vm._e(),
                     ]),
                     _vm._v(" "),
                     _vm._m(0),
@@ -30766,7 +30863,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [_vm._v("Update Product")]
+        [_vm._v("Edit Product")]
       ),
     ])
   },

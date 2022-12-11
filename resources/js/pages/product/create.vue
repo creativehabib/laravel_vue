@@ -27,9 +27,9 @@
                                         <div v-if="productForm.errors.has('image')" v-html="productForm.errors.get('image')" />
                                     </div>
                                     <div class="form-group mb-2">
-                                        <label for="description">Product Description:</label>
-                                        <textarea class="form-control" v-model="productForm.description" id="description" :class="{ 'is-invalid': productForm.errors.has('description')}" placeholder="Product Description" rows="3"></textarea>
-                                        
+                                        <label for="">Product Description:</label>
+                                        <textarea class="form-control" v-model="productForm.description" name="description" :class="{ 'is-invalid': productForm.errors.has('description')}" placeholder="Product Description" rows="3"></textarea>
+
                                     <div v-if="productForm.errors.has('description')" v-html="productForm.errors.get('description')" />
                                     </div>
                                     <div class="form-group">
@@ -86,7 +86,7 @@ export default{
             this.productForm.image = file
         },
     }
-  
+
 }
 </script>
 

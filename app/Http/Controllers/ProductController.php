@@ -98,14 +98,30 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+
         $this->validate($request, [
-            'title' => "required, $product->id"
+            'title' => "required|max:255|unique:products,title, $product->id",
+            'price' => 'required|integer',
+            'image' => 'sometimes|nullable|image|max:2048',
+            'description' => 'required'
         ]);
+
         $product->update([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
+            'price' => $request->price,
+            //'image' => 'image'
+            'description' => $request->description,
         ]);
-        return response()->json('success', 200);
+
+        if($request->image){
+            $imageName = time().'_'. uniqid() .'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('storage/product'), $imageName);
+            $product->image = '/storage/product/' . $imageName;
+            $product->save();
+        }
+
+        return response()->json($product, 200);
     }
 
     /**
@@ -117,10 +133,14 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if($product){
+            $productImage = $product->image;
+            $productPath = public_path($productImage);
+            if ($productImage && file_exists($productPath)){
+                unlink($productPath);
+            }
             $product->delete();
-            return response()->json('success', 200);
         }else{
-            return response()->json('failed', 404);
+            return response()->json('Product not found', 404);
         }
     }
 }
